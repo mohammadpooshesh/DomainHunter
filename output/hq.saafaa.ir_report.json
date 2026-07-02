@@ -1,0 +1,359 @@
+{
+  "domain": "hq.saafaa.ir",
+  "scan_date": "2026-07-03T01:26:13.281634",
+  "duration": 103.64836478233337,
+  "results": {
+    "whois": {
+      "error": "timed out"
+    },
+    "dns": {
+      "a": [
+        {
+          "value": "109.125.136.37",
+          "ttl": 3600
+        }
+      ],
+      "aaaa": [],
+      "mx": [],
+      "ns": [],
+      "txt": [],
+      "soa": null,
+      "spf": [],
+      "dmarc": [],
+      "caa": [],
+      "srv": [],
+      "ptr": [],
+      "axfr": []
+    },
+    "ssl": {
+      "subject": "*.hq.saafaa.ir",
+      "issuer": "R12",
+      "serial": "458365762253715681309419174881551316871333",
+      "version": 2,
+      "not_before": "2026-04-25 05:14:52",
+      "not_after": "2026-07-24 05:14:51",
+      "days_remaining": 21,
+      "san": [
+        "<DNSName(value='*.hq.saafaa.ir')>",
+        "<DNSName(value='hq.saafaa.ir')>"
+      ],
+      "chain": [
+        "*.hq.saafaa.ir",
+        "R12",
+        "ISRG Root X1"
+      ],
+      "cipher": "ECDHE-RSA-AES256-GCM-SHA384",
+      "tls_version": "TLSv1.2",
+      "supported_versions": [
+        "TLS 1.2"
+      ]
+    },
+    "certificate_transparency": {
+      "certificates": [],
+      "subdomains": []
+    },
+    "web": {
+      "status_code": 404,
+      "url": "https://hq.saafaa.ir",
+      "server": "nginx/1.16.1",
+      "content_type": "text/html",
+      "content_length": 555,
+      "encoding": "utf-8",
+      "http_version": "HTTP/1.1",
+      "title": "404 Not Found",
+      "meta_tags": 0,
+      "scripts": 0,
+      "links": 0,
+      "images": 0,
+      "forms": 0,
+      "redirects": [],
+      "redirect_count": 0,
+      "sitemap_urls": []
+    },
+    "headers": {
+      "all_headers": {
+        "server": "nginx/1.16.1",
+        "date": "Thu, 02 Jul 2026 21:55:14 GMT",
+        "content-type": "text/html",
+        "content-length": "555",
+        "connection": "keep-alive"
+      },
+      "security_headers": {
+        "Strict-Transport-Security": null,
+        "Content-Security-Policy": null,
+        "X-Frame-Options": null,
+        "X-Content-Type-Options": null,
+        "Referrer-Policy": null,
+        "Permissions-Policy": null,
+        "X-XSS-Protection": null,
+        "Cross-Origin-Opener-Policy": null,
+        "Cross-Origin-Embedder-Policy": null,
+        "Cross-Origin-Resource-Policy": null
+      },
+      "security_score": {
+        "score": 0,
+        "max_score": 10,
+        "percentage": 0.0,
+        "grade": "F",
+        "details": [
+          {
+            "header": "Strict-Transport-Security",
+            "present": false,
+            "value": null
+          },
+          {
+            "header": "Content-Security-Policy",
+            "present": false,
+            "value": null
+          },
+          {
+            "header": "X-Frame-Options",
+            "present": false,
+            "value": null
+          },
+          {
+            "header": "X-Content-Type-Options",
+            "present": false,
+            "value": null
+          },
+          {
+            "header": "Referrer-Policy",
+            "present": false,
+            "value": null
+          },
+          {
+            "header": "Permissions-Policy",
+            "present": false,
+            "value": null
+          },
+          {
+            "header": "X-XSS-Protection",
+            "present": false,
+            "value": null
+          },
+          {
+            "header": "Cross-Origin-Opener-Policy",
+            "present": false,
+            "value": null
+          },
+          {
+            "header": "Cross-Origin-Embedder-Policy",
+            "present": false,
+            "value": null
+          },
+          {
+            "header": "Cross-Origin-Resource-Policy",
+            "present": false,
+            "value": null
+          }
+        ]
+      },
+      "cookies": [],
+      "cookie_flags": {
+        "secure": false,
+        "httponly": false,
+        "samesite": false
+      },
+      "waf_detected": [
+        "Server: nginx/1.16.1"
+      ],
+      "cdn_detected": []
+    },
+    "technologies": {
+      "technologies": [
+        {
+          "name": "Nginx",
+          "type": "web_server"
+        },
+        {
+          "name": "Cloudflare",
+          "type": "cdn"
+        }
+      ],
+      "categories": {
+        "web_server": [
+          "Nginx"
+        ],
+        "cdn": [
+          "Cloudflare"
+        ]
+      },
+      "count": 2
+    },
+    "favicon": {},
+    "subdomains": {
+      "found": [
+        "*.hq.saafaa.ir",
+        "harbor.hq.saafaa.ir",
+        "green.hq.saafaa.ir"
+      ],
+      "bruteforce_results": [],
+      "total": 3
+    },
+    "wayback": {
+      "snapshots": [],
+      "total_snapshots": 0,
+      "first_seen": null,
+      "last_seen": null
+    },
+    "ip_info": {
+      "ip_addresses": [
+        "109.125.136.37"
+      ],
+      "ip_details": [
+        {
+          "ip": "109.125.136.37",
+          "asn": "49100",
+          "asn_description": "IR-THR-PTE - Pishgaman Toseeh Ertebatat Company (Private Joint Stock), IR",
+          "asn_country_code": "IR",
+          "organization": "PTS-DSL-Zone1",
+          "cidr": "109.125.134.16/28, 109.125.134.32/27, 109.125.134.64/26, 109.125.134.128/25, 109.125.135.0/24, 109.125.136.0/21",
+          "country": "IR",
+          "region": "",
+          "city": "",
+          "abuse_contact": ""
+        }
+      ],
+      "asn": "49100",
+      "asn_description": "IR-THR-PTE - Pishgaman Toseeh Ertebatat Company (Private Joint Stock), IR",
+      "organization": "PTS-DSL-Zone1",
+      "country": "IR",
+      "region": "",
+      "city": "",
+      "cloud_provider": null,
+      "abuse_contact": ""
+    },
+    "reverse_ip": {
+      "ip_addresses": [
+        "109.125.136.37"
+      ],
+      "domains_on_same_ip": [],
+      "total_ips": 1,
+      "total_domains_shared": 0
+    },
+    "email": {
+      "emails": [],
+      "sources": {},
+      "total": 0
+    },
+    "leaks": {
+      "leak_sources": [
+        {
+          "url": "https://haveibeenpwned.com/domain/hq.saafaa.ir",
+          "status": 404
+        },
+        {
+          "url": "https://breachdirectory.org/search?domain=hq.saafaa.ir",
+          "status": 403
+        }
+      ],
+      "exposed_data": [],
+      "note": "Checking public breach sources. This module checks only publicly available breach databases."
+    },
+    "github": {
+      "repositories": [],
+      "code_results": [],
+      "total_count": 0,
+      "error": "No GitHub token configured",
+      "search_queries": [
+        "site:github.com hq.saafaa.ir",
+        "site:github.com hq.saafaa.ir config",
+        "site:github.com hq.saafaa.ir .env"
+      ]
+    },
+    "google": {
+      "queries": [
+        {
+          "query": "site:hq.saafaa.ir",
+          "google_url": "https://www.google.com/search?q=site:hq.saafaa.ir",
+          "bing_url": "https://www.bing.com/search?q=site:hq.saafaa.ir",
+          "duckduckgo_url": "https://duckduckgo.com/?q=site:hq.saafaa.ir"
+        },
+        {
+          "query": "\"domain\"",
+          "google_url": "https://www.google.com/search?q=\"domain\"",
+          "bing_url": "https://www.bing.com/search?q=\"domain\"",
+          "duckduckgo_url": "https://duckduckgo.com/?q=\"domain\""
+        },
+        {
+          "query": "site:github.com hq.saafaa.ir",
+          "google_url": "https://www.google.com/search?q=site:github.com+hq.saafaa.ir",
+          "bing_url": "https://www.bing.com/search?q=site:github.com+hq.saafaa.ir",
+          "duckduckgo_url": "https://duckduckgo.com/?q=site:github.com+hq.saafaa.ir"
+        },
+        {
+          "query": "site:gitlab.com hq.saafaa.ir",
+          "google_url": "https://www.google.com/search?q=site:gitlab.com+hq.saafaa.ir",
+          "bing_url": "https://www.bing.com/search?q=site:gitlab.com+hq.saafaa.ir",
+          "duckduckgo_url": "https://duckduckgo.com/?q=site:gitlab.com+hq.saafaa.ir"
+        },
+        {
+          "query": "filetype:pdf hq.saafaa.ir",
+          "google_url": "https://www.google.com/search?q=filetype:pdf+hq.saafaa.ir",
+          "bing_url": "https://www.bing.com/search?q=filetype:pdf+hq.saafaa.ir",
+          "duckduckgo_url": "https://duckduckgo.com/?q=filetype:pdf+hq.saafaa.ir"
+        },
+        {
+          "query": "filetype:xlsx hq.saafaa.ir",
+          "google_url": "https://www.google.com/search?q=filetype:xlsx+hq.saafaa.ir",
+          "bing_url": "https://www.bing.com/search?q=filetype:xlsx+hq.saafaa.ir",
+          "duckduckgo_url": "https://duckduckgo.com/?q=filetype:xlsx+hq.saafaa.ir"
+        },
+        {
+          "query": "filetype:doc hq.saafaa.ir",
+          "google_url": "https://www.google.com/search?q=filetype:doc+hq.saafaa.ir",
+          "bing_url": "https://www.bing.com/search?q=filetype:doc+hq.saafaa.ir",
+          "duckduckgo_url": "https://duckduckgo.com/?q=filetype:doc+hq.saafaa.ir"
+        },
+        {
+          "query": "filetype:csv hq.saafaa.ir",
+          "google_url": "https://www.google.com/search?q=filetype:csv+hq.saafaa.ir",
+          "bing_url": "https://www.bing.com/search?q=filetype:csv+hq.saafaa.ir",
+          "duckduckgo_url": "https://duckduckgo.com/?q=filetype:csv+hq.saafaa.ir"
+        },
+        {
+          "query": "filetype:xml hq.saafaa.ir",
+          "google_url": "https://www.google.com/search?q=filetype:xml+hq.saafaa.ir",
+          "bing_url": "https://www.bing.com/search?q=filetype:xml+hq.saafaa.ir",
+          "duckduckgo_url": "https://duckduckgo.com/?q=filetype:xml+hq.saafaa.ir"
+        },
+        {
+          "query": "filetype:sql hq.saafaa.ir",
+          "google_url": "https://www.google.com/search?q=filetype:sql+hq.saafaa.ir",
+          "bing_url": "https://www.bing.com/search?q=filetype:sql+hq.saafaa.ir",
+          "duckduckgo_url": "https://duckduckgo.com/?q=filetype:sql+hq.saafaa.ir"
+        },
+        {
+          "query": "inurl:hq.saafaa.ir intitle:index.of",
+          "google_url": "https://www.google.com/search?q=inurl:hq.saafaa.ir+intitle:index.of",
+          "bing_url": "https://www.bing.com/search?q=inurl:hq.saafaa.ir+intitle:index.of",
+          "duckduckgo_url": "https://duckduckgo.com/?q=inurl:hq.saafaa.ir+intitle:index.of"
+        },
+        {
+          "query": "intitle:hq.saafaa.ir \"confidential\"",
+          "google_url": "https://www.google.com/search?q=intitle:hq.saafaa.ir+\"confidential\"",
+          "bing_url": "https://www.bing.com/search?q=intitle:hq.saafaa.ir+\"confidential\"",
+          "duckduckgo_url": "https://duckduckgo.com/?q=intitle:hq.saafaa.ir+\"confidential\""
+        }
+      ],
+      "note": "These are search engine queries for manual use. DomainHunter generates them for you to run in a browser.",
+      "total_queries": 12
+    },
+    "securitytrails": {
+      "error": "No SecurityTrails API key configured"
+    },
+    "virustotal": {
+      "error": "No VirusTotal API key configured"
+    },
+    "shodan": {
+      "error": "No Shodan API key configured"
+    },
+    "censys": {
+      "error": "Censys API credentials not configured"
+    },
+    "screenshots": {
+      "screenshots": [],
+      "error": "BrowserType.launch: Executable doesn't exist at C:\\Users\\moham\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1228\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright was just installed or updated.       \u2551\n\u2551 Please run the following command to download new browsers: \u2551\n\u2551                                                            \u2551\n\u2551     playwright install                                     \u2551\n\u2551                                                            \u2551\n\u2551 <3 Playwright Team                                         \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d"
+    }
+  }
+}

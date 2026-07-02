@@ -5,7 +5,7 @@ from typing import Any, Optional
 import dns.resolver
 from dns.exception import DNSException
 from ipwhois import IPWhois
-from ipwhois.exceptions import BaseIpwhoisException, WhoisLookupError
+from ipwhois.exceptions import BaseIpwhoisException
 
 from config import Config
 from core.utils import Utils
@@ -79,18 +79,19 @@ class IPInfoModule:
                 info["city"] = ""
                 info["abuse_contact"] = ""
                 entities_dict = entities if isinstance(entities, dict) else {}
-                for entity_key, entity_data in entities_dict.items():
-                        for item in vcard:
-                            if isinstance(item, list):
-                                for entry in item:
-                                    if isinstance(entry, list) and len(entry) >= 3:
-                                        if entry[0] == "adr":
-                                            adr_details = entry[1].get("label", "") if isinstance(entry[1], dict) else str(entry[1])
-                                            info["region"] = adr_details
-                                        if entry[0] == "email" and not info["abuse_contact"]:
-                                            info["abuse_contact"] = entry[1] if isinstance(entry[1], str) else (
-                                                entry[1].get("value", "") if isinstance(entry[1], dict) else ""
-                                            )
+                for entity_data in entities_dict.values():
+                    vcard_array = entity_data.get("vcardArray", []) if isinstance(entity_data, dict) else []
+                    for item in vcard_array:
+                        if isinstance(item, list):
+                            for entry in item:
+                                if isinstance(entry, list) and len(entry) >= 3:
+                                    if entry[0] == "adr":
+                                        adr_details = entry[1].get("label", "") if isinstance(entry[1], dict) else str(entry[1])
+                                        info["region"] = adr_details
+                                    if entry[0] == "email" and not info["abuse_contact"]:
+                                        info["abuse_contact"] = entry[1] if isinstance(entry[1], str) else (
+                                            entry[1].get("value", "") if isinstance(entry[1], dict) else ""
+                                        )
                 org_name = (str(info.get("organization", "") or "") + " " + str(results.get("asn_description") or "")).lower()
                 for provider, keywords in self.CLOUD_PROVIDERS.items():
                     if any(kw in org_name for kw in keywords):

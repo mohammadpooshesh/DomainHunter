@@ -59,7 +59,7 @@ class ShodanModule:
                 elif response and response.status_code == 403:
                     result["error"] = "Invalid Shodan API key"
                     break
-            if not result.get("error") and not any(k.startswith("1") or k.startswith("2") for k in result):
+            if not result.get("error") and not any(k.replace(".", "").isdigit() for k in result):
                 result["error"] = "No data found on Shodan"
         except Exception as e:
             result["error"] = str(e)

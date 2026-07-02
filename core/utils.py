@@ -76,7 +76,7 @@ class Utils:
     def safe_get(client: httpx.Client, url: str, **kwargs) -> Optional[httpx.Response]:
         try:
             return client.get(url, **kwargs)
-        except (httpx.TimeoutException, httpx.ConnectError, httpx.ReadError, httpx.RemoteProtocolError, httpx.HTTPStatusError):
+        except (httpx.TimeoutException, httpx.ConnectError, httpx.ReadError, httpx.RemoteProtocolError):
             return None
 
     @staticmethod

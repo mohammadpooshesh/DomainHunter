@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Optional
 
 import typer
-from rich.prompt import Confirm
 
 from config import Config
 from core.logger import Logger

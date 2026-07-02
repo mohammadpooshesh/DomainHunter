@@ -12,8 +12,8 @@ class CertTransparencyModule:
 
     def run(self, domain: str, config: Config) -> dict[str, Any]:
         result: dict[str, Any] = {"certificates": [], "subdomains": []}
+        client = Utils.create_client(config.timeout)
         try:
-            client = Utils.create_client(config.timeout)
             response = Utils.safe_get(
                 client,
                 f"https://crt.sh/?q=%25.{domain}&output=json",
@@ -42,7 +42,8 @@ class CertTransparencyModule:
                                 result["subdomains"].append(name)
                 except (ValueError, TypeError):
                     pass
-            client.close()
         except Exception as e:
             result["error"] = str(e)
+        finally:
+            client.close()
         return result

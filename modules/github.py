@@ -77,11 +77,10 @@ class GitHubModule:
                         "url": item.get("html_url", ""),
                         "language": item.get("language", ""),
                     }
-                    if repo not in result["code_results"] or True:
-                        if "repositories" not in result:
-                            result["repositories_list"] = []
-                        if "repositories_list" not in result:
-                            result["repositories_list"] = []
+                    if "repositories_list" not in result:
+                        result["repositories_list"] = []
+                    seen_repos = {r["name"] for r in result["repositories_list"]}
+                    if repo["name"] not in seen_repos:
                         result["repositories_list"].append(repo)
 
             result["total_count"] = len(result["code_results"])

@@ -56,7 +56,6 @@ class EmailModule:
                 result["sources"]["soa"] = soa_emails
 
             result["emails"] = list(set(result["emails"]))
-            result["emails"] = [e for e in result["emails"] if e.lower().endswith(f"@{domain}".lower()) or True]
             result["total"] = len(result["emails"])
         except Exception as e:
             result["error"] = str(e)
