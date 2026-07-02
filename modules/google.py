@@ -10,7 +10,7 @@ class GoogleModule:
 
     DORK_QUERIES = [
         "site:{domain}",
-        '"domain"',
+        '"{domain}"',
         "site:github.com {domain}",
         "site:gitlab.com {domain}",
         "filetype:pdf {domain}",
