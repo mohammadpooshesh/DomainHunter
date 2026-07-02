@@ -1,0 +1,16 @@
+# DomainHunter Configuration
+# API keys can also be set via environment variables
+
+timeout: 10
+threads: 30
+cache: true
+cache_ttl: 3600
+verbose: false
+
+# API Configuration
+github_token:
+virustotal:
+shodan:
+securitytrails:
+censys_id:
+censys_secret:
