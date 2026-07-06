@@ -47,18 +47,16 @@ class WebModule:
                     if forms:
                         result["form_details"] = []
                         for form in forms:
-                            form_info = {
-                                "action": form.get("action", ""),
-                                "method": form.get("method", "get").upper(),
-                                "inputs": len(form.find_all("input")),
-                            }
-                            result["form_details"].append(form_info)
-                except Exception:
-                    pass
-                redirects = []
-                if hasattr(response, "history") and response.history:
-                    for h in response.history:
-                        redirects.append(str(h.url))
+                            result["form_details"].append(
+                                {
+                                    "action": form.get("action", ""),
+                                    "method": form.get("method", "get").upper(),
+                                    "inputs": len(form.find_all("input")),
+                                }
+                            )
+                except Exception as e:
+                    result["parse_warning"] = str(e)
+                redirects = [str(h.url) for h in getattr(response, "history", [])]
                 result["redirects"] = redirects
                 result["redirect_count"] = len(redirects)
             else:
@@ -76,6 +74,8 @@ class WebModule:
         client = Utils.create_client(config.timeout)
         try:
             response = Utils.safe_get(client, f"https://{domain}/robots.txt")
+            if response is None:
+                response = Utils.safe_get(client, f"http://{domain}/robots.txt")
             if response and response.status_code == 200:
                 text = response.text
                 result["robots_txt"] = text
@@ -101,9 +101,7 @@ class WebModule:
     def _check_sitemap(self, domain: str, config: Config, result: dict[str, Any]) -> None:
         client = Utils.create_client(config.timeout)
         try:
-            sitemap_urls = result.get("robots_sitemaps", [])
-            if not sitemap_urls:
-                sitemap_urls = [f"https://{domain}/sitemap.xml"]
+            sitemap_urls = result.get("robots_sitemaps", []) or [f"https://{domain}/sitemap.xml"]
             urls: list[str] = []
             for sm_url in sitemap_urls:
                 response = Utils.safe_get(client, sm_url)
@@ -115,7 +113,7 @@ class WebModule:
                                 urls.append(loc.string.strip())
                     except Exception:
                         pass
-            result["sitemap_urls"] = urls
+            result["sitemap_urls"] = sorted(set(urls))
         except Exception:
             pass
         finally:
