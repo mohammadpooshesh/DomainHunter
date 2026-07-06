@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from typing import Optional
+from urllib.parse import urlparse
 
 import httpx
 import tldextract
@@ -22,22 +23,37 @@ class Utils:
 
     @staticmethod
     def parse_domain(domain: str) -> ParsedDomain:
-        extracted = tldextract.extract(domain)
+        clean_domain = Utils.clean_domain(domain)
+        extracted = tldextract.extract(clean_domain)
         return ParsedDomain(
-            domain=domain,
+            domain=clean_domain,
             subdomain=extracted.subdomain,
             domain_name=extracted.domain,
             suffix=extracted.suffix,
-            fqdn=extracted.fqdn or domain,
+            fqdn=extracted.fqdn or clean_domain,
         )
 
     @staticmethod
+    def clean_domain(domain: str) -> str:
+        """Return a bare hostname from a domain, URL, or host/path input."""
+        domain = (domain or "").strip().lower()
+        if not domain:
+            return ""
+        parsed = urlparse(domain if "://" in domain else f"//{domain}")
+        host = parsed.hostname or domain.split("/", 1)[0]
+        return host.rstrip(".")
+
+    @staticmethod
     def is_valid_domain(domain: str) -> bool:
+        clean_domain = Utils.clean_domain(domain)
+        if clean_domain != (domain or "").strip().lower().rstrip("."):
+            return False
         pattern = r"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$"
-        return bool(re.match(pattern, domain))
+        return bool(re.fullmatch(pattern, clean_domain))
 
     @staticmethod
     def normalize_url(url: str) -> str:
+        url = (url or "").strip()
         if not url.startswith(("http://", "https://")):
             url = f"https://{url}"
         return url.rstrip("/")
@@ -86,4 +102,4 @@ class Utils:
     @staticmethod
     def extract_emails(text: str) -> list[str]:
         pattern = r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-        return list(set(re.findall(pattern, text)))
+        return sorted(set(re.findall(pattern, text or "")))
