@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import pytest
-
 from core.utils import Utils
 
 
@@ -12,12 +10,21 @@ class TestUtils:
         assert parsed.suffix == "com"
         assert parsed.subdomain == "www"
 
+    def test_parse_domain_from_url(self):
+        parsed = Utils.parse_domain("https://www.example.com/path")
+        assert parsed.fqdn == "www.example.com"
+
     def test_is_valid_domain(self):
         assert Utils.is_valid_domain("example.com")
         assert Utils.is_valid_domain("www.example.co.uk")
         assert not Utils.is_valid_domain("not a domain")
         assert not Utils.is_valid_domain("")
         assert not Utils.is_valid_domain("http://example.com")
+
+    def test_clean_domain(self):
+        assert Utils.clean_domain("https://www.example.com/a") == "www.example.com"
+        assert Utils.clean_domain("example.com/") == "example.com"
+        assert Utils.clean_domain("EXAMPLE.COM.") == "example.com"
 
     def test_normalize_url(self):
         assert Utils.normalize_url("example.com") == "https://example.com"
