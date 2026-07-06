@@ -6,6 +6,7 @@ from config import Config
 from core.cache import Cache
 from core.logger import Logger
 from core.threads import ThreadManager
+from core.utils import Utils
 
 
 class Scanner:
@@ -13,7 +14,7 @@ class Scanner:
         self.config = config
         self.log = Logger.get(verbose=config.verbose)
         self.cache = Cache(cache_dir=config.cache_dir, ttl=config.cache_ttl) if config.cache else None
-        self.threads = ThreadManager(max_workers=config.threads)
+        self.threads = ThreadManager(max_workers=max(1, config.threads))
         self.results: dict[str, Any] = {}
 
     def run_module(self, name: str, module: Any, domain: str) -> None:
@@ -28,10 +29,12 @@ class Scanner:
         self.log.debug(f"[{name}] running...")
         try:
             result = module.run(domain, self.config)
+            if result is None:
+                result = {}
             self.results[name] = result
             if self.cache and cache_key:
                 self.cache.set(cache_key, result)
-            if result and result.get("error"):
+            if isinstance(result, dict) and result.get("error"):
                 self.log.fail(f"[{name}] {result['error']}")
             else:
                 self.log.success(f"[{name}] completed")
@@ -40,8 +43,12 @@ class Scanner:
             self.results[name] = {"error": str(e)}
 
     def scan(self, domain: str, modules: list[tuple[str, Any]]) -> dict[str, Any]:
-        self.log.section(f"Scanning: {domain}")
+        normalized_domain = Utils.clean_domain(domain)
+        if not Utils.is_valid_domain(normalized_domain):
+            raise ValueError(f"Invalid domain: {domain}")
+
+        self.log.section(f"Scanning: {normalized_domain}")
         self.results = {}
         for name, module in modules:
-            self.run_module(name, module, domain)
+            self.run_module(name, module, normalized_domain)
         return self.results
