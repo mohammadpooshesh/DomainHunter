@@ -35,9 +35,9 @@ class GoogleModule:
             encoded = quote_plus(query)
             result["queries"].append({
                 "query": query,
-                "google_url": f"https://www.google.com/search?q={encoded}",
-                "bing_url": f"https://www.bing.com/search?q={encoded}",
-                "duckduckgo_url": f"https://duckduckgo.com/?q={encoded}",
+                "google_url": "https://www.google.com/search?q=" + encoded,
+                "bing_url": "https://www.bing.com/search?q=" + encoded,
+                "duckduckgo_url": "https://duckduckgo.com/?q=" + encoded,
             })
         result["total_queries"] = len(result["queries"])
         return result

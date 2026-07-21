@@ -20,7 +20,8 @@ class WaybackModule:
         try:
             response = Utils.safe_get(
                 client,
-                f"https://web.archive.org/cdx/search/cdx?url={domain}&output=json&limit=1000",
+                "https://web.archive.org/cdx/search/cdx",
+                params={"url": domain, "output": "json", "limit": 1000},
             )
             if response and response.status_code == 200:
                 try:
@@ -48,7 +49,7 @@ class WaybackModule:
 
             history_response = Utils.safe_get(
                 client,
-                f"https://web.archive.org/web/timemap/link/{domain}",
+                "https://web.archive.org/web/timemap/link/" + domain,
             )
             if history_response and history_response.status_code == 200:
                 result["timemap"] = history_response.text[:2000]
@@ -56,7 +57,7 @@ class WaybackModule:
             for path in ["/robots.txt", "/"]:
                 snap_response = Utils.safe_get(
                     client,
-                    f"https://web.archive.org/web/2020/{domain}{path}",
+                    "https://web.archive.org/web/2020/" + domain + path,
                 )
                 if snap_response and snap_response.status_code == 200:
                     key = "history_homepage" if path == "/" else "history_robots"

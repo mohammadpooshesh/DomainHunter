@@ -104,9 +104,9 @@ class TechnologiesModule:
         result: dict[str, Any] = {"technologies": [], "categories": {}}
         client = Utils.create_client(config.timeout)
         try:
-            response = Utils.safe_get(client, f"https://{domain}")
+            response = Utils.safe_get(client, "https://" + domain)
             if response is None:
-                response = Utils.safe_get(client, f"http://{domain}")
+                response = Utils.safe_get(client, "http://" + domain)
 
             if response:
                 html = response.text

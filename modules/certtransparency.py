@@ -15,7 +15,8 @@ class CertTransparencyModule:
         try:
             response = Utils.safe_get(
                 client,
-                f"https://crt.sh/?q=%25.{domain}&output=json",
+                "https://crt.sh/",
+                params={"q": "%." + domain, "output": "json"},
             )
             if response and response.status_code == 200:
                 try:
@@ -36,7 +37,7 @@ class CertTransparencyModule:
                         names = entry.get("name_value", "").split("\n")
                         for name in names:
                             name = name.strip().lower()
-                            if name.endswith(f".{domain}") and name not in seen:
+                            if name.endswith("." + domain) and name not in seen:
                                 seen.add(name)
                                 result["subdomains"].append(name)
                 except (ValueError, TypeError):

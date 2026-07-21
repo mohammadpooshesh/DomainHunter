@@ -45,7 +45,11 @@ class SubdomainsModule:
         subdomains: list[str] = []
         client = Utils.create_client(config.timeout)
         try:
-            response = Utils.safe_get(client, f"https://crt.sh/?q=%25.{domain}&output=json")
+            response = Utils.safe_get(
+                client,
+                "https://crt.sh/",
+                params={"q": "%." + domain, "output": "json"},
+            )
             if response and response.status_code == 200:
                 try:
                     data = response.json()
@@ -54,7 +58,7 @@ class SubdomainsModule:
                         names = entry.get("name_value", "").split("\n")
                         for name in names:
                             name = name.strip().lower()
-                            if name.endswith(f".{domain}") and name not in seen:
+                            if name.endswith("." + domain) and name not in seen:
                                 seen.add(name)
                                 subdomains.append(name)
                 except (ValueError, TypeError):
@@ -70,9 +74,9 @@ class SubdomainsModule:
         client = Utils.create_client(config.timeout, follow_redirects=False)
         try:
             for sd in self.COMMON_SUBDOMAINS:
-                fqdn = f"{sd}.{domain}"
+                fqdn = sd + "." + domain
                 try:
-                    response = Utils.safe_get(client, f"https://{fqdn}")
+                    response = Utils.safe_get(client, "https://" + fqdn)
                     if response is not None:
                         found.append(fqdn)
                 except Exception:

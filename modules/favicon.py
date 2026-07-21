@@ -18,7 +18,7 @@ class FaviconModule:
         client = Utils.create_client(config.timeout)
         favicon_url = None
         try:
-            response = Utils.safe_get(client, f"https://{domain}")
+            response = Utils.safe_get(client, "https://" + domain)
             if response:
                 soup = BeautifulSoup(response.text, "lxml")
                 icon_link = soup.find("link", rel=lambda v: v and ("icon" in v.lower() if v else False))
@@ -28,9 +28,9 @@ class FaviconModule:
                         favicon_url = href
                     else:
                         suffix = href if href.startswith("/") else "/" + href
-                        favicon_url = f"https://{domain}" + suffix
+                        favicon_url = "https://" + domain + suffix
             if not favicon_url:
-                favicon_url = f"https://{domain}/favicon.ico"
+                favicon_url = "https://" + domain + "/favicon.ico"
 
             if favicon_url:
                 icon_response = Utils.safe_get(client, favicon_url)

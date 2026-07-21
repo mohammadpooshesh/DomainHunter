@@ -101,7 +101,7 @@ class IPInfoModule:
                 fallback: Optional[dict[str, Any]] = None
                 client = Utils.create_client(config.timeout)
                 try:
-                    response = Utils.safe_get(client, f"https://ipinfo.io/{ip}/json")
+                    response = Utils.safe_get(client, "https://ipinfo.io/" + ip + "/json")
                     if response and response.status_code == 200:
                         fallback = response.json()
                 finally:

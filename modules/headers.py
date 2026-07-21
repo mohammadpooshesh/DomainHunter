@@ -26,9 +26,9 @@ class HeadersModule:
         result: dict[str, Any] = {}
         client = Utils.create_client(config.timeout)
         try:
-            response = Utils.safe_get(client, f"https://{domain}")
+            response = Utils.safe_get(client, "https://" + domain)
             if response is None:
-                response = Utils.safe_get(client, f"http://{domain}")
+                response = Utils.safe_get(client, "http://" + domain)
 
             if response:
                 headers = dict(response.headers)
@@ -74,7 +74,7 @@ class HeadersModule:
                 for wh in waf_headers:
                     for key in headers:
                         if key.lower() == wh.lower():
-                            detected_wafs.append(f"{wh}: {headers[key]}")
+                            detected_wafs.append(wh + ": " + str(headers[key]))
                 cdn_signatures = {
                     "cloudflare": ["CF-RAY", "cf-cache-status", "CF-Cache-Status"],
                     "akamai": ["X-Akamai-Transformed"],

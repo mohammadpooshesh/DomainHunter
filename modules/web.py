@@ -14,11 +14,11 @@ class WebModule:
     def run(self, domain: str, config: Config) -> dict[str, Any]:
         result: dict[str, Any] = {}
         client = Utils.create_client(config.timeout)
-        url = f"https://{domain}"
+        url = "https://" + domain
         try:
             response = Utils.safe_get(client, url)
             if response is None:
-                url = f"http://{domain}"
+                url = "http://" + domain
                 response = Utils.safe_get(client, url)
 
             if response:
@@ -75,7 +75,7 @@ class WebModule:
     def _check_robots_txt(self, domain: str, config: Config, result: dict[str, Any]) -> None:
         client = Utils.create_client(config.timeout)
         try:
-            response = Utils.safe_get(client, f"https://{domain}/robots.txt")
+            response = Utils.safe_get(client, "https://" + domain + "/robots.txt")
             if response and response.status_code == 200:
                 text = response.text
                 result["robots_txt"] = text
@@ -103,7 +103,7 @@ class WebModule:
         try:
             sitemap_urls = result.get("robots_sitemaps", [])
             if not sitemap_urls:
-                sitemap_urls = [f"https://{domain}/sitemap.xml"]
+                sitemap_urls = ["https://" + domain + "/sitemap.xml"]
             urls: list[str] = []
             for sm_url in sitemap_urls:
                 response = Utils.safe_get(client, sm_url)
