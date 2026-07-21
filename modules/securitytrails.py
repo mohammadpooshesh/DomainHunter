@@ -21,7 +21,7 @@ class SecurityTrailsModule:
         try:
             response = Utils.safe_get(
                 client,
-                f"https://api.securitytrails.com/v1/domain/{domain}",
+                "https://api.securitytrails.com/v1/domain/" + domain,
                 headers=headers,
             )
             if response and response.status_code == 200:
@@ -43,7 +43,7 @@ class SecurityTrailsModule:
 
             subdomains_response = Utils.safe_get(
                 client,
-                f"https://api.securitytrails.com/v1/domain/{domain}/subdomains",
+                "https://api.securitytrails.com/v1/domain/" + domain + "/subdomains",
                 headers=headers,
             )
             if subdomains_response and subdomains_response.status_code == 200:
