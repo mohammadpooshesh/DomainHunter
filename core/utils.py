@@ -61,7 +61,7 @@ class Utils:
     def normalize_url(url: str) -> str:
         """Ensure the URL has an https:// scheme and no trailing slash."""
         if not url.startswith(("http://", "https://")):
-            url = f"https://{url}"
+            url = "https://" + url
         return url.rstrip("/")
 
     @staticmethod
