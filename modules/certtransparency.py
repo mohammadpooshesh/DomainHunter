@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from core.utils import Utils
-
 from config import Config
+from core.utils import Utils
 
 
 class CertTransparencyModule:

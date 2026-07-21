@@ -24,7 +24,11 @@ class FaviconModule:
                 icon_link = soup.find("link", rel=lambda v: v and ("icon" in v.lower() if v else False))
                 if icon_link and icon_link.get("href"):
                     href = icon_link["href"]
-                    favicon_url = href if href.startswith("http") else f"https://{domain}{href if href.startswith('/') else '/' + href}"
+                    if href.startswith("http"):
+                        favicon_url = href
+                    else:
+                        suffix = href if href.startswith("/") else "/" + href
+                        favicon_url = f"https://{domain}" + suffix
             if not favicon_url:
                 favicon_url = f"https://{domain}/favicon.ico"
 

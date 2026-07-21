@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any
+from urllib.parse import quote_plus
 
 from config import Config
 
@@ -31,7 +32,7 @@ class GoogleModule:
         }
         for q in self.DORK_QUERIES:
             query = q.format(domain=domain)
-            encoded = query.replace(" ", "+")
+            encoded = quote_plus(query)
             result["queries"].append({
                 "query": query,
                 "google_url": f"https://www.google.com/search?q={encoded}",
