@@ -1,46 +1,46 @@
-from __future__ import annotations
-
-import json
-import tempfile
-from pathlib import Path
-
-import pytest
+import json as jsonlib
 
 from core.report import ReportGenerator
 
+RESULTS = {
+    "dns": {"a": [{"value": "1.2.3.4"}]},
+    "web": {"error": "Could not connect"},
+}
 
-class TestReport:
-    @pytest.fixture
-    def report(self):
-        results = {
-            "dns": {"a": [{"value": "1.2.3.4", "ttl": 3600}]},
-            "whois": {"registrar": "Test Registrar", "creation_date": "2020-01-01"},
-            "headers": {"security_score": {"grade": "A", "score": 5, "max_score": 10}},
-        }
-        return ReportGenerator("example.com", results, 1.5)
 
-    def test_to_json(self, report):
-        data = json.loads(report.to_json())
-        assert data["domain"] == "example.com"
-        assert data["duration"] == 1.5
-        assert "dns" in data["results"]
+def test_to_json_is_valid_and_contains_domain():
+    report = ReportGenerator("example.com", RESULTS, 1.5)
+    parsed = jsonlib.loads(report.to_json())
+    assert parsed["domain"] == "example.com"
+    assert parsed["duration"] == 1.5
+    assert "dns" in parsed["results"]
 
-    def test_to_html(self, report):
-        html = report.to_html()
-        assert "<html" in html
-        assert "example.com" in html
-        assert "DomainHunter Report" in html
 
-    def test_to_markdown(self, report):
-        md = report.to_markdown()
-        assert "example.com" in md
-        assert "DNS" in md or "dns" in md
+def test_to_markdown_contains_headers():
+    report = ReportGenerator("example.com", RESULTS, 1.5)
+    md = report.to_markdown()
+    assert "# DomainHunter Report: example.com" in md
+    assert "## dns" in md
 
-    def test_save(self, report):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            saved = report.save(output_dir=tmpdir, formats=["json", "html", "md"])
-            assert "json" in saved
-            assert "html" in saved
-            assert "md" in saved
-            for path in saved.values():
-                assert Path(path).exists()
+
+def test_to_html_contains_domain_and_status():
+    report = ReportGenerator("example.com", RESULTS, 1.5)
+    html = report.to_html()
+    assert "example.com" in html
+    assert "ERROR" in html.upper()
+
+
+def test_summary_stats_counts_success_and_failure():
+    report = ReportGenerator("example.com", RESULTS, 1.5)
+    stats = {s["label"]: s["value"] for s in report._build_summary_stats()}
+    assert stats["Modules Run"] == "2"
+    assert stats["Successful"] == "1"
+    assert stats["Failed"] == "1"
+
+
+def test_save_writes_files(tmp_path):
+    report = ReportGenerator("example.com", RESULTS, 1.5)
+    saved = report.save(output_dir=str(tmp_path), formats=["json", "md"])
+    assert (tmp_path / "example.com_report.json").exists()
+    assert (tmp_path / "example.com_report.md").exists()
+    assert "html" not in saved

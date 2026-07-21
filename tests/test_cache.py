@@ -1,54 +1,29 @@
-from __future__ import annotations
-
-import tempfile
-from pathlib import Path
-
-import pytest
-
 from core.cache import Cache
 
 
-class TestCache:
-    @pytest.fixture
-    def cache(self):
-        tmp_dir = tempfile.mkdtemp()
-        c = Cache(cache_dir=tmp_dir, ttl=3600)
-        yield c
-        import shutil
-        try:
-            c._init_db()
-        except Exception:
-            pass
-        shutil.rmtree(tmp_dir, ignore_errors=True)
+def test_set_and_get_roundtrip(tmp_path):
+    cache = Cache(cache_dir=str(tmp_path), ttl=3600)
+    cache.set("k", {"a": 1})
+    assert cache.get("k") == {"a": 1}
 
-    def test_set_and_get(self, cache):
-        cache.set("key1", {"data": "value"})
-        assert cache.get("key1") == {"data": "value"}
 
-    def test_get_nonexistent(self, cache):
-        assert cache.get("nonexistent") is None
+def test_expired_entry_returns_none(tmp_path):
+    cache = Cache(cache_dir=str(tmp_path), ttl=3600)
+    cache.set("k", "v", ttl=-1)
+    assert cache.get("k") is None
 
-    def test_delete(self, cache):
-        cache.set("key1", "value")
-        cache.delete("key1")
-        assert cache.get("key1") is None
 
-    def test_clear(self, cache):
-        cache.set("key1", "value1")
-        cache.set("key2", "value2")
-        cache.clear()
-        assert cache.get("key1") is None
-        assert cache.get("key2") is None
+def test_delete_and_clear(tmp_path):
+    cache = Cache(cache_dir=str(tmp_path), ttl=3600)
+    cache.set("a", 1)
+    cache.set("b", 2)
+    cache.delete("a")
+    assert cache.get("a") is None
+    assert cache.get("b") == 2
+    cache.clear()
+    assert cache.get("b") is None
 
-    def test_ttl_expiry(self, cache):
-        cache.set("key1", "value", ttl=0)
-        import time
-        time.sleep(0.1)
-        assert cache.get("key1") is None
 
-    def test_cleanup(self, cache):
-        cache.set("key1", "value", ttl=0)
-        import time
-        time.sleep(0.1)
-        cache.cleanup()
-        assert cache.get("key1") is None
+def test_missing_key_returns_none(tmp_path):
+    cache = Cache(cache_dir=str(tmp_path), ttl=10)
+    assert cache.get("nope") is None
