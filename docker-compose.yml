@@ -1,17 +1,17 @@
-version: "3.9"
-
 services:
   domainhunter:
     build: .
-    command: scan example.com --html --json
+    image: domainhunter:latest
+    environment:
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      VIRUSTOTAL_API_KEY: ${VIRUSTOTAL_API_KEY:-}
+      SHODAN_API_KEY: ${SHODAN_API_KEY:-}
+      SECURITYTRAILS_API_KEY: ${SECURITYTRAILS_API_KEY:-}
+      CENSYS_API_ID: ${CENSYS_API_ID:-}
+      CENSYS_API_SECRET: ${CENSYS_API_SECRET:-}
     volumes:
       - ./output:/app/output
       - ./cache:/app/cache
-      - ./config.yaml:/app/config.yaml:ro
-    environment:
-      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
-      - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY:-}
-      - SHODAN_API_KEY=${SHODAN_API_KEY:-}
-      - SECURITYTRAILS_API_KEY=${SECURITYTRAILS_API_KEY:-}
-      - CENSYS_API_ID=${CENSYS_API_ID:-}
-      - CENSYS_API_SECRET=${CENSYS_API_SECRET:-}
+    # Override at runtime, e.g.:
+    #   docker compose run --rm domainhunter scan example.com --verbose
+    command: ["--help"]

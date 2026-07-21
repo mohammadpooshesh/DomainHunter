@@ -1,10 +1,10 @@
-.PHONY: help install install-dev lint format test cov type check clean run docker
+.PHONY: help install install-dev lint format test cov type check clean run
 
 help:
 	@echo "Available targets:"
 	@echo "  install       Install runtime dependencies"
 	@echo "  install-dev   Install development dependencies"
-	@echo "  lint          Run ruff"
+	@echo "  lint          Run ruff linter"
 	@echo "  format        Auto-format with ruff"
 	@echo "  test          Run the test suite"
 	@echo "  cov           Run tests with coverage report"
@@ -23,7 +23,6 @@ lint:
 
 format:
 	ruff format .
-	test:
 
 test:
 	pytest
