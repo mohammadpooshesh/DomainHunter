@@ -92,7 +92,7 @@ class SSLModule:
                 context.check_hostname = False
                 context.verify_mode = ssl_lib.CERT_NONE
                 with socket.create_connection((domain, 443), timeout=timeout) as sock:
-                    with context.wrap_socket(sock, server_hostname=domain) as ssock:
+                    with context.wrap_socket(sock, server_hostname=domain):
                         available.append(name)
             except (ssl_lib.SSLError, socket.timeout, ConnectionError, OSError):
                 pass
