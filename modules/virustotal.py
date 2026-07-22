@@ -21,7 +21,7 @@ class VirusTotalModule:
         try:
             response = Utils.safe_get(
                 client,
-                f"https://www.virustotal.com/api/v3/domains/{domain}",
+                "https://www.virustotal.com/api/v3/domains/" + domain,
                 headers=headers,
             )
             if response and response.status_code == 200:

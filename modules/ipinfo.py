@@ -72,7 +72,6 @@ class IPInfoModule:
                 network = results.get("network", {})
                 info["organization"] = network.get("name", "")
                 info["cidr"] = network.get("cidr", "")
-                objects = results.get("objects", {})
                 entities = results.get("entities", {})
                 info["country"] = network.get("country", "")
                 info["region"] = ""
@@ -99,23 +98,22 @@ class IPInfoModule:
                         break
         except (BaseIpwhoisException, ValueError, KeyError, IndexError):
             try:
-                async_result = None
+                fallback: Optional[dict[str, Any]] = None
                 client = Utils.create_client(config.timeout)
                 try:
-                    response = Utils.safe_get(client, f"https://ipinfo.io/{ip}/json")
+                    response = Utils.safe_get(client, "https://ipinfo.io/" + ip + "/json")
                     if response and response.status_code == 200:
-                        async_result = response.json()
+                        fallback = response.json()
                 finally:
                     client.close()
-                if async_result:
-                    info["organization"] = async_result.get("org", "")
-                    info["country"] = async_result.get("country", "")
-                    info["region"] = async_result.get("region", "")
-                    info["city"] = async_result.get("city", "")
-                    info["asn"] = async_result.get("asn", "")
-                    hostname = async_result.get("hostname", "")
-                    info["hosting_company"] = async_result.get("org", "")
-                    org_name = async_result.get("org", "").lower()
+                if fallback:
+                    info["organization"] = fallback.get("org", "")
+                    info["country"] = fallback.get("country", "")
+                    info["region"] = fallback.get("region", "")
+                    info["city"] = fallback.get("city", "")
+                    info["asn"] = fallback.get("asn", "")
+                    info["hosting_company"] = fallback.get("org", "")
+                    org_name = fallback.get("org", "").lower()
                     for provider, keywords in self.CLOUD_PROVIDERS.items():
                         if any(kw in org_name for kw in keywords):
                             info["cloud_provider"] = provider

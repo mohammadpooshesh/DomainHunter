@@ -6,6 +6,7 @@ import dns.resolver
 from dns.exception import DNSException
 
 from config import Config
+from core.utils import Utils
 
 
 class CensysModule:
@@ -24,14 +25,13 @@ class CensysModule:
             result["error"] = "Could not resolve domain IP"
             return result
 
-        from core.utils import Utils
         client = Utils.create_client(config.timeout)
         auth = (api_id, api_secret)
         try:
             for ip in ips:
                 response = Utils.safe_get(
                     client,
-                    f"https://search.censys.io/api/v2/hosts/{ip}",
+                    "https://search.censys.io/api/v2/hosts/" + ip,
                     auth=auth,
                 )
                 if response and response.status_code == 200:

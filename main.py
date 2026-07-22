@@ -10,29 +10,29 @@ from config import Config
 from core.logger import Logger
 from core.report import ReportGenerator
 from core.scanner import Scanner
-from modules.dns import DNSModule
-from modules.whois import WhoisModule
-from modules.ssl import SSLModule
+from core.utils import Utils
+from modules.censys import CensysModule
 from modules.certtransparency import CertTransparencyModule
-from modules.web import WebModule
-from modules.headers import HeadersModule
+from modules.dns import DNSModule
+from modules.email import EmailModule
 from modules.favicon import FaviconModule
-from modules.technologies import TechnologiesModule
-from modules.subdomains import SubdomainsModule
-from modules.wayback import WaybackModule
-from modules.reverseip import ReverseIPModule
-from modules.ipinfo import IPInfoModule
 from modules.github import GitHubModule
 from modules.google import GoogleModule
-from modules.securitytrails import SecurityTrailsModule
-from modules.virustotal import VirusTotalModule
-from modules.shodan import ShodanModule
-from modules.censys import CensysModule
-from modules.email import EmailModule
+from modules.headers import HeadersModule
+from modules.ipinfo import IPInfoModule
 from modules.leaks import LeaksModule
 from modules.portscan import PortScanModule
+from modules.reverseip import ReverseIPModule
 from modules.screenshots import ScreenshotsModule
-
+from modules.securitytrails import SecurityTrailsModule
+from modules.shodan import ShodanModule
+from modules.ssl import SSLModule
+from modules.subdomains import SubdomainsModule
+from modules.technologies import TechnologiesModule
+from modules.virustotal import VirusTotalModule
+from modules.wayback import WaybackModule
+from modules.web import WebModule
+from modules.whois import WhoisModule
 
 app = typer.Typer(
     name="domainhunter",
@@ -73,10 +73,11 @@ def _get_modules(include_scan: bool = False) -> list[tuple[str, object]]:
 def _version_callback(value: bool) -> None:
     if value:
         from importlib.metadata import version
+
         try:
             ver = version("domainhunter")
         except Exception:
-            ver = "0.1.0"
+            ver = "1.0.0"
         print(f"DomainHunter v{ver}")
         raise typer.Exit()
 
@@ -91,7 +92,7 @@ def main_callback(
         is_eager=True,
     ),
 ) -> None:
-    pass
+    """DomainHunter - a professional domain OSINT framework."""
 
 
 @app.command()
@@ -109,6 +110,7 @@ def scan(
         None, "--api-config", help="Path to API configuration file",
     ),
 ) -> None:
+    """Run a full OSINT scan against DOMAIN and generate reports."""
     config_obj = Config.load(str(api_config) if api_config else None)
     config_obj.threads = threads
     config_obj.timeout = timeout
@@ -116,6 +118,11 @@ def scan(
     config_obj.verbose = verbose
 
     log = Logger.get(verbose=verbose)
+
+    domain = domain.strip().lower().lstrip("*.")
+    if not Utils.is_valid_domain(domain):
+        log.fail(f"Invalid domain: {domain}")
+        raise typer.Exit(code=1)
 
     log.info(f"Starting DomainHunter scan for: {domain}")
     start_time = time.time()
@@ -134,8 +141,6 @@ def scan(
         formats.append("html")
     if json:
         formats.append("json")
-    if pdf:
-        formats.append("pdf")
     if not formats:
         formats = ["json", "html", "md"]
 
@@ -145,12 +150,13 @@ def scan(
         pdf_path = Path(config_obj.output_dir) / f"{domain}_report.pdf"
         try:
             import weasyprint
+
             html_content = report.to_html()
             weasyprint.HTML(string=html_content).write_pdf(str(pdf_path))
             saved["pdf"] = str(pdf_path)
             log.success(f"PDF report saved to {pdf_path}")
         except ImportError:
-            log.warning("PDF generation requires weasyprint: pip install weasyprint")
+            log.warning("PDF generation requires weasyprint: pip install 'domainhunter[pdf]'")
         except Exception as e:
             log.warning(f"PDF generation failed: {e}")
 
@@ -158,7 +164,7 @@ def scan(
     for fmt, path in saved.items():
         log.success(f"[{fmt.upper()}] {path}")
 
-    log.console.print(f"\n[bold]Scan Results Summary:[/]")
+    log.console.print("\n[bold]Scan Results Summary:[/]")
     for name, data in results.items():
         if data and isinstance(data, dict) and data.get("error"):
             log.fail(f"  {name}: {data['error']}")
@@ -178,6 +184,7 @@ def scan(
 
 @app.command()
 def list_apis() -> None:
+    """Show which environment variables configure each API-backed module."""
     log = Logger.get()
     log.print_table(
         "API Configuration Status",

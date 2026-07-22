@@ -30,8 +30,9 @@ class ShodanModule:
             for ip in ips:
                 response = Utils.safe_get(
                     client,
-                    f"https://api.shodan.io/shodan/host/{ip}?key={api_key}",
+                    "https://api.shodan.io/shodan/host/" + ip,
                     headers=headers,
+                    params={"key": api_key},
                 )
                 if response and response.status_code == 200:
                     data = response.json()

@@ -121,6 +121,8 @@ footer { text-align: center; padding: 20px; color: #475569; font-size: 13px; }
 
 
 class ReportGenerator:
+    """Render scan results into JSON, Markdown, and HTML reports."""
+
     def __init__(self, domain: str, results: dict[str, Any], duration: float) -> None:
         self.domain = domain
         self.results = results
@@ -149,16 +151,6 @@ class ReportGenerator:
             {"label": "Failed", "value": str(error_count)},
             {"label": "Duration (s)", "value": f"{self.duration:.1f}"},
         ]
-
-    def _add_summary_counts(self, modules: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        counts: dict[str, int] = {}
-        for key in self.results:
-            parts = key.split("_")
-            for part in parts:
-                if part not in counts:
-                    counts[part] = 0
-                counts[part] += 1
-        return modules
 
     def to_json(self) -> str:
         output = {
@@ -218,7 +210,7 @@ class ReportGenerator:
 
         if "json" in formats:
             path = output_path / f"{self.domain}_report.json"
-            path.write_text(self.to_json())
+            path.write_text(self.to_json(), encoding="utf-8")
             saved["json"] = str(path)
 
         if "html" in formats:
@@ -228,7 +220,7 @@ class ReportGenerator:
 
         if "md" in formats:
             path = output_path / f"{self.domain}_report.md"
-            path.write_text(self.to_markdown())
+            path.write_text(self.to_markdown(), encoding="utf-8")
             saved["md"] = str(path)
 
         return saved

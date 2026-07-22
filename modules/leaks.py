@@ -18,8 +18,8 @@ class LeaksModule:
         client = Utils.create_client(config.timeout)
         try:
             leak_check_urls = [
-                f"https://haveibeenpwned.com/domain/{domain}",
-                f"https://breachdirectory.org/search?domain={domain}",
+                "https://haveibeenpwned.com/domain/" + domain,
+                "https://breachdirectory.org/search?domain=" + domain,
             ]
             for url in leak_check_urls:
                 response = Utils.safe_get(client, url)
@@ -31,8 +31,9 @@ class LeaksModule:
 
             github_response = Utils.safe_get(
                 client,
-                f"https://api.github.com/search/code?q={domain}+password&per_page=5",
+                "https://api.github.com/search/code",
                 headers={"Accept": "application/vnd.github.v3+json"},
+                params={"q": domain + " password", "per_page": 5},
             )
             if github_response and github_response.status_code == 200:
                 data = github_response.json()
@@ -46,7 +47,7 @@ class LeaksModule:
 
             pastebin_response = Utils.safe_get(
                 client,
-                f"https://psbdmp.ws/api/search/{domain}",
+                "https://psbdmp.ws/api/search/" + domain,
             )
             if pastebin_response and pastebin_response.status_code == 200:
                 try:

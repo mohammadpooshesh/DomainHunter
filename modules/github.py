@@ -42,7 +42,9 @@ class GitHubModule:
                 try:
                     response = Utils.safe_get(
                         client,
-                        f"https://api.github.com/search/code?q={q}&per_page=10",
+                        "https://api.github.com/search/code",
+                        headers=headers,
+                        params={"q": q, "per_page": 10},
                     )
                     if response and response.status_code == 200:
                         data = response.json()
@@ -65,7 +67,9 @@ class GitHubModule:
 
             repo_search_response = Utils.safe_get(
                 client,
-                f"https://api.github.com/search/repositories?q={domain}&per_page=10&sort=stars",
+                "https://api.github.com/search/repositories",
+                headers=headers,
+                params={"q": domain, "per_page": 10, "sort": "stars"},
             )
             if repo_search_response and repo_search_response.status_code == 200:
                 repo_data = repo_search_response.json()
